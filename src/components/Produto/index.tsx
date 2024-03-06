@@ -1,24 +1,25 @@
-import { Produto as ProdutoType } from '../../App'
+import React from 'react'
+import { Produto } from '../../App'
 import * as S from './styles'
 
-type Props = {
-  produto: ProdutoType
-  aoComprar: (produto: ProdutoType) => void
-  favoritar: (produto: ProdutoType) => void
+interface Props {
+  produto: Produto
   estaNosFavoritos: boolean
+  favoritar: (produto: Produto) => void
+  aoComprar: (produto: Produto) => void
 }
-
-export const paraReal = (valor: number) =>
-  new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
-    valor
-  )
 
 const ProdutoComponent = ({
   produto,
-  aoComprar,
+  estaNosFavoritos,
   favoritar,
-  estaNosFavoritos
+  aoComprar
 }: Props) => {
+  const precoFormatado = produto.preco.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  })
+
   return (
     <S.Produto>
       <S.Capa>
@@ -26,7 +27,7 @@ const ProdutoComponent = ({
       </S.Capa>
       <S.Titulo>{produto.nome}</S.Titulo>
       <S.Prices>
-        <strong>{paraReal(produto.preco)}</strong>
+        <strong>{precoFormatado}</strong>
       </S.Prices>
       <S.BtnComprar onClick={() => favoritar(produto)} type="button">
         {estaNosFavoritos
